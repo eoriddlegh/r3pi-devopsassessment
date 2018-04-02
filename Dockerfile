@@ -10,4 +10,4 @@ FROM node:9-alpine
 
 COPY --from=build /app /
 EXPOSE 3000
-CMD ["node", "./bin/start"]
+CMD ["npm", "start"]
