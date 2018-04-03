@@ -1,23 +1,25 @@
 node {
-    agent {
-        // Equivalent to "docker build -f Dockerfile.build --build-arg version=1.0.2 ./build/
-        dockerfile {
-            filename 'Dockerfile'
-            additionalBuildArgs  '--build-arg -t r3pidokku/sample-node-app:0.0.1'
-        }
-    }
-    stages {
-        stage('Test') {
-            steps {
-                sh 'node --version'
-                sh 'svn --version'
-            }
-        }
+    environment {
+        DOCKERIMGNAME = 'r3pidokku/sample-node-app'
+        DOKKU_URL = 'sample-node-app.r3pidokku'
+        APPVERSION = '0.0.1'
+        SRVRPORT   = '3000'
     }
     stage('Build') {
         echo 'print out docker version'
         sh 'docker --version'
-        sh 'docker --version'
-        //sh 'exit 0'
+        // TODO cd to git repo working folder
+        sh 'docker build -t ${env.DOCKERIMGNAME}:${env.APPVERSION} .'
+    }
+    stage('SmokeTest') {
+        sh 'docker run -p ${env.SRVRPORT}:3000 -d ${env.DOCKERIMGNAME}:${env.APPVERSION}'
+        sh 'curl http://localhost:${env.SRVRPORT} | grep "<title>R3PI</title>"'
+    }
+    stage('PushToDokku') {
+        // TODO cd to git repo working folder
+        sh 'git push dokku master'
+    }
+    stage('TestOnDokku') {
+        sh 'curl http://${env.DOKKU_URL} | grep "<title>R3PI</title>"'
     }
 }
