@@ -1,6 +1,7 @@
 node {
     stage('Example') {
         try {
+            sh 'docker --version'
             sh 'exit 1'
         }
         catch (exc) {
