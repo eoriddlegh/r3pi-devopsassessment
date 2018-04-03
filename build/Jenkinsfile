@@ -1,4 +1,4 @@
-pipeline {
+node {
     agent {
         // Equivalent to "docker build -f Dockerfile.build --build-arg version=1.0.2 ./build/
         dockerfile {
@@ -13,5 +13,11 @@ pipeline {
                 sh 'svn --version'
             }
         }
+    }
+    stage('Build') {
+        echo 'print out docker version'
+        sh 'docker --version'
+        sh 'docker --version'
+        //sh 'exit 0'
     }
 }
