@@ -1,3 +1,7 @@
+/*
+ ** This is a just a testing file.  See build/Jenkinsfile for the real one.
+ ** had to test how to get git pull dokku master to work.  Ran out of time.
+ */
 node {
     stage('Example') {
         echo 'print out docker version'
