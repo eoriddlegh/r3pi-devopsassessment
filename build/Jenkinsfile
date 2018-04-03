@@ -1,0 +1,17 @@
+pipeline {
+    agent {
+        // Equivalent to "docker build -f Dockerfile.build --build-arg version=1.0.2 ./build/
+        dockerfile {
+            filename 'Dockerfile'
+            additionalBuildArgs  '--build-arg -t r3pidokku/sample-node-app:0.0.1'
+        }
+    }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'node --version'
+                sh 'svn --version'
+            }
+        }
+    }
+}
