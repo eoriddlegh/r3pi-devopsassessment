@@ -9,9 +9,13 @@ Task 1. Setup Dokku*
 First you will need to deploy Dokku on a public cloud provider of your choice, we prefer AWS, but GCE, Digital Ocean or Azure are also ok. Use infrastructure-as-code tools to set it up, we suggest Terraform, but Cloudformation, Ansible or others are also accepted.
   SEE: ./ansibleOnAWS
     DELAYS:  
-      - Dokku not a nice install on AWS EC2 instance.  default ssh-keys not generated correctly.
+      - Dokku not a nice install on AWS EC2 instance.  Dokku install generated bad ssh-keys and had to debug and research.
       - First time using ansible with AWS EC2 modules and the battle of boto and boto3 running together.  ARRRGGGH.
     TODO: install dokku and set it up.  I set this up manually
+
+  RUN ansible like so:
+    cd ./ansibleOnAWS
+    ansible-playbook -vvv -i inventory/hosts playbooks/dokku-aws.yml -e @group_vars/all
 
 Task 2. Deploy the NodeJS app
 To get a first taste of Dokku, manually deploy the application as provided (using buildpacks).
