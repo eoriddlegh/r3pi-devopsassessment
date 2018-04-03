@@ -1,0 +1,44 @@
+# Basic provisioning example
+- name: Create AWS resources
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+#  - name: Dokku Security group
+#    ec2_group:
+#      name: dokku
+#      description: Dokku Security Group
+#      region: "{{ aws_region }}"
+#      vpc_id: "{{ vpc_id }}"
+#      aws_secret_key: "{{ aws_secret_key }}"
+#      aws_access_key: "{{ aws_access_key }}"
+#      rules:
+#        - proto: all
+#          cidr_ip: 70.119.185.74/32
+#        - proto: all
+#          group_name: dokku
+#      rules_egress:
+#        - proto: all
+#          cidr_ip: 0.0.0.0/0
+#    register: firewall
+  - name: Create an EC2 instance
+    ec2:
+      aws_secret_key: "{{ aws_secret_key }}"
+      aws_access_key: "{{ aws_access_key }}"
+      key_name: "{{ key_name }}"
+      region: "{{ aws_region }}"
+      group_id: "{{ group_id }}"
+      instance_type: t2.micro
+      image: ami-916f59f4
+      wait: yes
+      volumes:
+        - device_name: /dev/sda1
+          volume_type: gp2
+          volume_size: 8
+          delete_on_termination: true
+      exact_count: 1
+      count_tag:
+        Name: dokku-demo
+      instance_tags:
+        Name: dokku-demo
+    register: ec2
