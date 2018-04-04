@@ -21,7 +21,7 @@ node {
     def appcontainer
 
     stage('Build') {
-        app = docker.build(dkimage)
+        app = docker.build(app)
     }
     stage('SmokeTest') {
         appcontainer = app.run("-d -p ${env.SRVRPORT}:3000")
