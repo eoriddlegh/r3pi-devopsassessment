@@ -20,7 +20,7 @@ node {
     stage('Example') {
         echo 'print out docker version'
         sh 'docker --version'
-        sh $/echo $APPVERSION/$
+        sh $/echo ${APPVERSION}/$
         // TODO cd to git repo working folder
         //sh 'echo dockerx build -t ${env.DOCKERIMGNAME}:${env.APPVERSION} .'
         //echo 'print git info'
