@@ -21,17 +21,18 @@ node {
     def appcontainer
 
     stage('Build') {
-        app = docker.build("${env.DOCKERIMGNAME}:${env.APPVERSION}")
+        echo "docker.build(${env.DOCKERIMGNAME}:${env.APPVERSION})"
+        //app = docker.build("${env.DOCKERIMGNAME}:${env.APPVERSION}")
     }
     stage('SmokeTest') {
-        appcontainer = app.run("-d -p ${env.SRVRPORT}:3000")
-        sh 'curl http://localhost:$SRVRPORT | grep "<title>R3PI</title>"'
-        appcontainer.stop
+        //appcontainer = app.run("-d -p ${env.SRVRPORT}:3000")
+        //sh 'curl http://localhost:$SRVRPORT | grep "<title>R3PI</title>"'
+        //appcontainer.stop
     }
     stage('PushToDokku') {
         // TODO cd to git repo working folder
         //sh 'git push dokku master'
-        echo 'Push ${env.DOCKERIMGNAME}:${env.APPVERSION} to dokku as ${env.DOKKUTAGNAME}'
+        //echo 'Push ${env.DOCKERIMGNAME}:${env.APPVERSION} to dokku as ${env.DOKKUTAGNAME}'
     }
     // stage TestOnDokku is a more rigourous test of app.
     // This is where test cases for the hotfix or feature is tested and if passed it 
