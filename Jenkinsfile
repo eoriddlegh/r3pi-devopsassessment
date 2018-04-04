@@ -12,28 +12,25 @@ node {
 
         APPNAME = 'sample-node-app'
         SRVRPORT = '3000'
-        DOCKERIMGNAME = 'r3pidokku/$APPNAME'
-        DOKKUTAGNAME = 'dokku/$APPNAME:$APPVERSION'
-        DOKKU_URL = '$APPNAME.r3pidokku'
+        DOCKERIMGNAME = 'r3pidokku/${env.APPNAME}'
+        DOKKUTAGNAME = 'dokku/${env.APPNAME}:${env.APPVERSION}'
+        DOKKU_URL = '${env.APPNAME}.r3pidokku'
     }
 
-    def dkimage = image("$DOCKERIMGNAME:$APPVERSION")
+    def dkimage = image("${env.DOCKERIMGNAME}:${env.APPVERSION}")
 
     stage('Build') {
-        //sh 'docker build -t $DOCKERIMGNAME:$APPVERSION .'
         dkimage = docker.build(dkimage)
     }
     stage('SmokeTest') {
-        //sh 'docker run --rm -p ${env.SRVRPORT}:3000 -d ${env.DOCKERIMGNAME}:${env.APPVERSION}'
-        def dkcontainer = dkimage.run("-d -p $SRVRPORT:3000")
+        def dkcontainer = dkimage.run("-d -p ${env.SRVRPORT}:3000")
         sh 'curl http://localhost:$SRVRPORT | grep "<title>R3PI</title>"'
-        //sh 'docker stop $(docker ps | grep $DOCKERIMGNAME$APPVERSION | awk '{print $1}')'
         dkcontainer.stop
     }
     stage('PushToDokku') {
         // TODO cd to git repo working folder
         //sh 'git push dokku master'
-        echo 'Push $DOCKERIMGNAME:$APPVERSION to dokku as dokku/sample-node-app:$APPVERSION'
+        echo 'Push ${env.DOCKERIMGNAME}:${env.APPVERSION} to dokku as ${env.DOKKUTAGNAME}'
     }
     // stage TestOnDokku is a more rigourous test of app.
     // This is where test cases for the hotfix or feature is tested and if passed it 
