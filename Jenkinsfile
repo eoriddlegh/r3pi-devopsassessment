@@ -21,7 +21,7 @@ node {
     def appcontainer
 
     stage('Build') {
-        echo "docker.build(${DOCKERIMGNAME}:${APPVERSION})"
+        echo "docker.build(env.DOCKERIMGNAME:env.APPVERSION)"
         //app = docker.build("${env.DOCKERIMGNAME}:${env.APPVERSION}")
     }
     stage('SmokeTest') {
