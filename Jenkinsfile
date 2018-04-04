@@ -17,15 +17,16 @@ node {
         DOKKU_URL = '${env.APPNAME}.r3pidokku'
     }
 
-    def dkimage = image("${env.DOCKERIMGNAME}:${env.APPVERSION}")
+    def app = docker.image("${env.DOCKERIMGNAME}:${env.APPVERSION}")
+    def appcontainer
 
     stage('Build') {
-        dkimage = docker.build(dkimage)
+        app = docker.build(dkimage)
     }
     stage('SmokeTest') {
-        def dkcontainer = dkimage.run("-d -p ${env.SRVRPORT}:3000")
+        appcontainer = app.run("-d -p ${env.SRVRPORT}:3000")
         sh 'curl http://localhost:$SRVRPORT | grep "<title>R3PI</title>"'
-        dkcontainer.stop
+        appcontainer.stop
     }
     stage('PushToDokku') {
         // TODO cd to git repo working folder
