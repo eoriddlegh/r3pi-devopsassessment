@@ -17,11 +17,11 @@ node {
         DOKKU_URL = '${env.APPNAME}.r3pidokku'
     }
 
-    def app = docker.image("${env.DOCKERIMGNAME}:${env.APPVERSION}")
+    def app
     def appcontainer
 
     stage('Build') {
-        app = docker.build(app)
+        app = docker.build("${env.DOCKERIMGNAME}:${env.APPVERSION}")
     }
     stage('SmokeTest') {
         appcontainer = app.run("-d -p ${env.SRVRPORT}:3000")
