@@ -1,5 +1,4 @@
 node {
-    def dkimage = image("$DOCKERIMGNAME:$APPVERSION")
     environment {
         /*
          ** Ideally these vars be set at Jenkins job level and passed down as environment / build parameters.
@@ -17,6 +16,9 @@ node {
         DOKKUTAGNAME = 'dokku/$APPNAME:$APPVERSION'
         DOKKU_URL = '$APPNAME.r3pidokku'
     }
+
+    def dkimage = image("$DOCKERIMGNAME:$APPVERSION")
+
     stage('Build') {
         //sh 'docker build -t $DOCKERIMGNAME:$APPVERSION .'
         dkimage = docker.build(dkimage)
