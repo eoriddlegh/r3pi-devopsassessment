@@ -38,7 +38,7 @@ node {
         //def curlcmd = "curl --silent --show-error http://localhost:${env.SRVRPORT} | grep '<title>R3PI</title>'"
         //sh curlcmd
         //appcontainer.stop()
-        sh 'docker stop appcontainer.id'
+        docker.stop(appcontainer.id)
     }
     stage('Push Image to Dokku') {
         // TODO cd to git repo working folder
