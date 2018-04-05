@@ -27,7 +27,7 @@ node {
     }
     stage('Build image') {
         def apptag = "${env.DOCKERIMGNAME}:${env.APPVERSION}"
-        print "Docker Image will be : apptag"
+        print "Docker Image will be : ${env.DOCKERIMGNAME}:${env.APPVERSION}"
         app = docker.build(apptag)
     }
     stage('SmokeTest Image') {
@@ -36,7 +36,7 @@ node {
         // sh "docker inspect --format '{{ .NetworkSettings.Networks.bridge.IPAddress }}' appcontainer.id"
         // sh 'curl -s http://$APPIPADDR:$SRVRPORT | grep "<title>R3PI</title>"'
         // this issue is intermittent on windows.  I restarted box now it workw with localhost
-        def curlcmd = "curl http://${env.APPIPADDR}:${env.SRVRPORT} | grep '<title>R3PI</title>'"
+        def curlcmd = "sudo curl --silent --show-error http://${env.APPIPADDR}:${env.SRVRPORT} | grep '<title>R3PI</title>'"
         sh curlcmd
         appcontainer.stop
     }
