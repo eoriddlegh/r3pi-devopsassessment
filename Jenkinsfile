@@ -36,7 +36,8 @@ node {
         // sh "docker inspect --format '{{ .NetworkSettings.Networks.bridge.IPAddress }}' appcontainer.id"
         // sh 'curl -s http://$APPIPADDR:$SRVRPORT | grep "<title>R3PI</title>"'
         // this issue is intermittent on windows.  I restarted box now it workw with localhost
-        sh 'curl -s http://localhost:$SRVRPORT | grep "<title>R3PI</title>"'
+        def curlcmd = "curl http://${env.APPIPADDR}:${env.SRVRPORT} | grep '<title>R3PI</title>'"
+        sh curlcmd
         appcontainer.stop
     }
     stage('Push Image to Dokku') {
