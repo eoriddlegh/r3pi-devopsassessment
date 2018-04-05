@@ -15,7 +15,7 @@ env.DOKKU_URL ="${env.APPNAME}.r3pidokku"
 env.DOCKERIMGNAME = "r3pidokku/${env.APPNAME}"
 env.DOKKUTAGNAME = "dokku/${env.APPNAME}:${env.APPVERSION}"
 // docker inspect --format '{{ .NetworkSettings.Networks.bridge.IPAddress }}' <containerid>
-// env.APPIPADDR = "172.17.0.3"
+env.APPIPADDR = "172.17.0.3"
 
 node {
 
