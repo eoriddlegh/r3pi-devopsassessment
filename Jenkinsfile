@@ -35,9 +35,9 @@ node {
         // Had to do this for docker for windows it is not working the same as in linux
         // sh "docker inspect --format '{{ .NetworkSettings.Networks.bridge.IPAddress }}' appcontainer.id"
         // sh 'curl --silent --show-error http://$APPIPADDR:$SRVRPORT | grep "<title>R3PI</title>"'
-        def curlcmd = "curl --silent --show-error http://${env.APPIPADDR}:${env.SRVRPORT} | grep '<title>R3PI</title>'"
+        def curlcmd = "curl --silent --show-error http://localhost:${env.SRVRPORT} | grep '<title>R3PI</title>'"
         sh curlcmd
-        appcontainer.stop
+        docker.stop(appcontainer)
     }
     stage('Push Image to Dokku') {
         // TODO cd to git repo working folder
