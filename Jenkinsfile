@@ -15,7 +15,7 @@ env.DOKKU_URL ="${env.APPNAME}.r3pidokku"
 env.DOCKERIMGNAME = "r3pidokku/${env.APPNAME}"
 env.DOKKUTAGNAME = "dokku/${env.APPNAME}:${env.APPVERSION}"
 // docker inspect --format '{{ .NetworkSettings.Networks.bridge.IPAddress }}' <containerid>
-env.APPIPADDR = "172.17.0.3"
+// env.APPIPADDR = "172.17.0.3"
 
 node {
 
@@ -33,8 +33,10 @@ node {
     stage('SmokeTest Image') {
         appcontainer = app.run("--rm -p ${env.SRVRPORT}:3000")
         // Had to do this for docker for windows it is not working the same as in linux
-        //sh "docker inspect --format '{{ .NetworkSettings.Networks.bridge.IPAddress }}' appcontainer.id"
-        sh 'curl -s http://$APPIPADDR:$SRVRPORT | grep "<title>R3PI</title>"'
+        // sh "docker inspect --format '{{ .NetworkSettings.Networks.bridge.IPAddress }}' appcontainer.id"
+        // sh 'curl -s http://$APPIPADDR:$SRVRPORT | grep "<title>R3PI</title>"'
+        // this issue is intermittent on windows.  I restarted box now it workw with localhost
+        sh 'curl -s http://localhost:$SRVRPORT | grep "<title>R3PI</title>"'
         appcontainer.stop
     }
     stage('Push Image to Dokku') {
