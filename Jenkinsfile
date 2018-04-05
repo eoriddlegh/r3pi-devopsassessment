@@ -31,7 +31,7 @@ node {
         app = docker.build(apptag)
     }
     stage('SmokeTest Image') {
-        appcontainer = app.run("--rm -p ${env.SRVRPORT}:3000")
+        appcontainer = app.run("-p ${env.SRVRPORT}:3000")
         // Had to do this for docker for windows it is not working the same as in linux
         // sh "docker inspect --format '{{ .NetworkSettings.Networks.bridge.IPAddress }}' appcontainer.id"
         // sh 'curl --silent --show-error http://$APPIPADDR:$SRVRPORT | grep "<title>R3PI</title>"'
