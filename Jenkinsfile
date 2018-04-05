@@ -37,7 +37,7 @@ node {
         // sh 'curl --silent --show-error http://$APPIPADDR:$SRVRPORT | grep "<title>R3PI</title>"'
         def curlcmd = "curl --silent --show-error http://${env.APPIPADDR}:${env.SRVRPORT} | grep '<title>R3PI</title>'"
         sh curlcmd
-        docker.stop(appcontainer)
+        appcontainer.stop()
     }
     stage('Push Image to Dokku') {
         // TODO cd to git repo working folder
