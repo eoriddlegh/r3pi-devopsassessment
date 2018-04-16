@@ -31,14 +31,15 @@ node {
         app = docker.build(apptag)
     }
     stage('SmokeTest Image') {
-        appcontainer = app.run("-p ${env.SRVRPORT}:3000")
+        def cntrname = "${env.APPNAME}_${env.APPVERSION}"
+        appcontainer = app.run("-p ${env.SRVRPORT}:3000 --name ${env:APPNAME}_${env.APPVERSION}")
         // Had to do this for docker for windows it is not working the same as in linux
         // sh "docker inspect --format '{{ .NetworkSettings.Networks.bridge.IPAddress }}' appcontainer.id"
         // sh 'curl --silent --show-error http://$APPIPADDR:$SRVRPORT | grep "<title>R3PI</title>"'
-        //def curlcmd = "curl --silent --show-error http://localhost:${env.SRVRPORT} | grep '<title>R3PI</title>'"
-        //sh curlcmd
+        def curlcmd = "curl --silent --show-error http://localhost:${env.SRVRPORT} | grep '<title>R3PI</title>'"
+        sh curlcmd
         //appcontainer.stop()
-        docker.stop(appcontainer.id)
+        docker.stop(cntrname)
     }
     stage('Push Image to Dokku') {
         // TODO cd to git repo working folder
@@ -49,7 +50,7 @@ node {
     // This is where test cases for the hotfix or feature is tested and if passed it 
     // may be a potential RELEASE-CANDIDATE build for release to production.
     stage('Test Image on Dokku') {
-        sh 'curl -s http://$DOKKU_URL | grep "<title>R3PI</title>"'
+        //sh 'curl -s http://$DOKKU_URL | grep "<title>R3PI</title>"'
         //sh 'curl http://13.59.184.72 | grep "<title>R3PI</title>"'
     }
 }
